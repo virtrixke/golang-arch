@@ -48,7 +48,13 @@ func encodeJSON(w http.ResponseWriter, r *http.Request) {
 		First: "vincent",
 	}
 
-	err := json.NewEncoder(w).Encode(p1)
+	p2 := person{
+		First: "barbara",
+	}
+
+	xp := []person{p1, p2}
+
+	err := json.NewEncoder(w).Encode(xp)
 	if err != nil {
 		log.Println("Encode failed", err)
 	}
@@ -56,11 +62,11 @@ func encodeJSON(w http.ResponseWriter, r *http.Request) {
 }
 
 func decodeJSON(w http.ResponseWriter, r *http.Request) {
-	var p1 person
-	err := json.NewDecoder(r.Body).Decode(&p1)
+	var xp []person
+	err := json.NewDecoder(r.Body).Decode(&xp)
 	if err != nil {
 		log.Println("Decode failed", err)
 	}
 
-	log.Println("Person:", p1)
+	log.Println("Person:", xp)
 }
