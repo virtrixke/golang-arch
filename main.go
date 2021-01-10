@@ -7,7 +7,7 @@ import (
 )
 
 type person struct {
-	First string
+	First string `json:"firstname"`
 }
 
 func main() {
@@ -26,5 +26,14 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	fmt.Println(string(bs))
+	fmt.Println("Print JSON", string(bs))
+
+	xp2 := []person{}
+
+	err = json.Unmarshal(bs, &xp2)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	fmt.Println("Print unmarshall", xp2)
 }
