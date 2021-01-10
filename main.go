@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 )
 
 type person struct {
@@ -36,4 +37,30 @@ func main() {
 	}
 
 	fmt.Println("Print unmarshall", xp2)
+
+	http.HandleFunc("/encode", encodeJSON)
+	http.HandleFunc("/decode", decodeJSON)
+	http.ListenAndServe(":8080", nil)
+}
+
+func encodeJSON(w http.ResponseWriter, r *http.Request) {
+	p1 := person{
+		First: "vincent",
+	}
+
+	err := json.NewEncoder(w).Encode(p1)
+	if err != nil {
+		log.Println("Encode failed", err)
+	}
+
+}
+
+func decodeJSON(w http.ResponseWriter, r *http.Request) {
+	var p1 person
+	err := json.NewDecoder(r.Body).Decode(&p1)
+	if err != nil {
+		log.Println("Decode failed", err)
+	}
+
+	log.Println("Person:", p1)
 }
